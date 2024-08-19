@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/constants/images.dart';
-import 'package:weather_app/controller/HomeController.dart';
-import 'package:weather_app/model/current_weather_data.dart';
+import '../../constants/images.dart';
+import '../../controller/HomeController.dart';
+import '../../model/current_weather_data.dart';
 
-class OtherCitySection extends GetView<HomeController> {
+class GlobalCitySection extends GetView<HomeController> {
+  const GlobalCitySection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       height: 150,
       child: ListView.separated(
         physics: BouncingScrollPhysics(),

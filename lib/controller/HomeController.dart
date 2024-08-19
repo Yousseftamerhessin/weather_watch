@@ -42,7 +42,6 @@ class HomeController extends GetxController {
     initState();
     getLocalCitiesWeather();
     getGlobalCitiesWeather();
-    getCurrentLocation();
   }
 
   void updateWeather() {
@@ -51,7 +50,7 @@ class HomeController extends GetxController {
 
   void initState() {
     getCurrentWeatherData();
-    getFiveDaysData();
+    getFiveDaysData(); // التأكد من استدعاء دالة getFiveDaysData
   }
 
   void getCurrentWeatherData() {
@@ -102,36 +101,5 @@ class HomeController extends GetxController {
         update();
       });
     }
-  }
-
-  void getCurrentLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      print('Location services are disabled.');
-      return;
-    }
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        print('Location permission is denied.');
-        return;
-      }
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-      locationSettings: LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
-      ),
-    );
-
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark place = placemarks[0];
-    city = place.locality;
-    updateWeather();
   }
 }

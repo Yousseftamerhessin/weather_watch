@@ -6,7 +6,7 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 3,
+      height: 175,
       decoration: BoxDecoration(
         image: DecorationImage(
           colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
@@ -27,12 +27,6 @@ class CustomAppBar extends StatelessWidget {
               icon: Icon(Icons.menu, color: Colors.white),
               onPressed: () {},
             ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.search, color: Colors.white),
-                onPressed: () {},
-              ),
-            ],
           ),
           Padding(
             padding: EdgeInsets.only(top: 20, left: 20, right: 20),

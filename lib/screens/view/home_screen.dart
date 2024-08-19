@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:weather_app/screens/widgets/Global_Cities_Weather.dart';
+import 'package:weather_app/screens/widgets/custom_app_bar.dart';
 
 import '../../controller/HomeController.dart';
 import '../widgets/MyCard.dart';
@@ -10,28 +12,30 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<HomeController>(
-        builder: (controller) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  child: WeatherCard(controller: controller),
+      backgroundColor: Color(0xFF191A48),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            CustomAppBar(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    WeatherCard(controller: controller),
+                    Text(
+                      'OTHER CITIES',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    OtherCitySection(),
+                    MyChart(),
+                    GlobalCitySection(),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  child: OtherCitySection(),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  child: MyChart(),
-                ),
-              ],
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }

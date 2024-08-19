@@ -4,6 +4,6 @@ import '../../controller/HomeController.dart';
 class HomeBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => HomeController(city: ''));
+    Get.lazyPut(() => HomeController(city: 'giza'));
   }
 }
