@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:weather_app/controller/HomeController.dart';
-
 import '../../model/five_days_data.dart';
 
 class MyChart extends GetView<HomeController> {
@@ -17,12 +16,23 @@ class MyChart extends GetView<HomeController> {
           borderRadius: BorderRadius.circular(15),
         ),
         child: SfCartesianChart(
-          primaryXAxis: CategoryAxis(),
+          primaryXAxis: CategoryAxis(
+            title: AxisTitle(text: 'Date'),
+            labelRotation: 45,
+          ),
+          primaryYAxis: NumericAxis(
+            title: AxisTitle(text: 'Temperature (°C)'),
+            labelFormat: '{value}°C',
+          ),
+          title: ChartTitle(text: 'Temperature Forecast for Next 5 Days'),
+          tooltipBehavior: TooltipBehavior(enable: true),
           series: <CartesianSeries>[
             SplineSeries<FiveDayData, String>(
               dataSource: controller.fiveDaysData,
               xValueMapper: (FiveDayData f, _) => f.dateTime,
               yValueMapper: (FiveDayData f, _) => f.temp,
+              name: 'Temperature',
+              color: Colors.blue,
             ),
           ],
         ),
