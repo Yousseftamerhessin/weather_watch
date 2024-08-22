@@ -1,14 +1,12 @@
-// lib/screens/widgets/Global_Cities_Weather.dart
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../constants/images.dart';
 import '../../model/current_weather_data.dart';
 
-class GlobalCitySection extends StatelessWidget {
+class OtherCitySection extends StatelessWidget {
   final List<CurrentWeatherData> dataList;
 
-  const GlobalCitySection({Key? key, required this.dataList}) : super(key: key);
+  const OtherCitySection({Key? key, required this.dataList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

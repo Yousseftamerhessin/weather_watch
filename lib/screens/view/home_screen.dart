@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/screens/widgets/Global_Cities_Weather.dart';
 import 'package:weather_app/screens/widgets/custom_app_bar.dart';
-
-import '../../controller/HomeController.dart';
+import '../../cubit/home_cubit.dart';
 import '../widgets/MyCard.dart';
-import '../widgets/myList.dart';
+import '../widgets/Other_City_Section.dart';
 import '../widgets/my_chart.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +19,59 @@ class HomeScreen extends GetView<HomeController> {
             CustomAppBar(),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    WeatherCard(controller: controller),
-                    Text(
-                      'OTHER CITIES',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    OtherCitySection(),
-                    MyChart(),
-                    GlobalCitySection(),
-                  ],
+                child: BlocBuilder<WeatherCubit, WeatherState>(
+                  builder: (context, state) {
+                    if (state is WeatherLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (state is WeatherLoaded) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          WeatherCard(),
+                          Text(
+                            'Other Cities'.toUpperCase(),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontSize: 16,
+                                      fontFamily: 'flutterfonts',
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          OtherCitySection(
+                            dataList: [],
+                          ),
+                          Text(
+                            'Forecast Next 5 Days'.toUpperCase(),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontSize: 16,
+                                      fontFamily: 'flutterfonts',
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          MyChart(),
+                          Text(
+                            'Global Cities'.toUpperCase(),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontSize: 16,
+                                      fontFamily: 'flutterfonts',
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          GlobalCitySection(
+                            dataList: [],
+                          ),
+                        ],
+                      );
+                    } else if (state is WeatherError) {
+                      return Center(child: Text('Error: ${state.message}'));
+                    }
+                    return Center(child: Text('No data available'));
+                  },
                 ),
               ),
             ),

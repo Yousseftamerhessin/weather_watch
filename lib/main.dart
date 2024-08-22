@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/cubit/home_cubit.dart';
 import 'package:weather_app/screens/view/home_screen.dart';
-import 'package:weather_app/utils/HomeBinding.dart';
 
 void main() {
   runApp(WeatherApp());
@@ -10,16 +10,12 @@ void main() {
 class WeatherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      getPages: [
-        GetPage(
-          name: '/',
-          page: () => HomeScreen(),
-          binding: HomeBinding(),
-        )
-      ],
+      home: BlocProvider(
+        create: (context) => WeatherCubit(),
+        child: HomeScreen(),
+      ),
     );
   }
 }

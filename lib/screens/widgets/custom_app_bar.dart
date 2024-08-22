@@ -6,7 +6,7 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 175,
+      height: 180,
       decoration: BoxDecoration(
         image: DecorationImage(
           colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+            padding: EdgeInsets.only(top: 10, left: 20, right: 20),
             child: TextField(
               onChanged: (value) {
                 print("City: $value");

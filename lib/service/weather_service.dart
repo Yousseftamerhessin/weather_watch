@@ -5,58 +5,32 @@ import '/model/five_days_data.dart';
 class WeatherService {
   final String city;
 
-  String baseUrl = 'https://api.openweathermap.org/data/2.5';
-  String apiKey = 'appid=dfabd9c375999e248e2468f1289d0cca';
-
+  static const String baseUrl = 'https://api.openweathermap.org/data/2.5';
+  static const String apiKey = 'appid=dfabd9c375999e248e2468f1289d0cca';
 
   WeatherService({required this.city});
 
-  void getCurrentWeatherData({
-    Function()? beforSend,
-    Function(CurrentWeatherData currentWeatherData)? onSuccess,
-    Function(dynamic error)? onError,
-  }) {
+  Future<CurrentWeatherData> getCurrentWeatherData() async {
     final url = '$baseUrl/weather?q=$city&lang=en&$apiKey';
-    ApiRepository(
-      url: '$url',
-    ).get(
-        beforeSend: () => {
-              if (beforSend != null)
-                {
-                  beforSend(),
-                },
-            },
-        onSuccess: (data) => {
-              onSuccess!(CurrentWeatherData.fromJson(data)),
-            },
-        onError: (error) => {
-              if (onError != null)
-                {
-                  print(error),
-                  onError(error),
-                }
-            });
+    try {
+      final data = await ApiRepository(url: url).get();
+      return CurrentWeatherData.fromJson(data);
+    } catch (error) {
+      print('Error fetching current weather data: $error');
+      rethrow; // Re-throw the error to be handled elsewhere
+    }
   }
 
-  void getFiveDaysThreeHoursForcastData({
-    Function()? beforSend,
-    Function(List<FiveDayData> fiveDayData)? onSuccess,
-    Function(dynamic error)? onError,
-  }) {
+  Future<List<FiveDayData>> getFiveDaysThreeHoursForecastData() async {
     final url = '$baseUrl/forecast?q=$city&lang=en&$apiKey';
-    print(url);
-    ApiRepository(
-      url: '$url',
-    ).get(
-        beforeSend: () => {},
-        onSuccess: (data) => {
-              onSuccess!((data['list'] as List)
-                  .map((t) => FiveDayData.fromJson(t))
-                  .toList())
-            },
-        onError: (error) => {
-              print(error),
-              onError!(error),
-            });
+    try {
+      final data = await ApiRepository(url: url).get();
+      final list =
+          data['list'] as List<dynamic>; // Ensure type is List<dynamic>
+      return list.map((item) => FiveDayData.fromJson(item)).toList();
+    } catch (error) {
+      print('Error fetching five days forecast data: $error');
+      rethrow; // Re-throw the error to be handled elsewhere
+    }
   }
 }
