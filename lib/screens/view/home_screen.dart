@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/screens/widgets/Global_Cities_Weather.dart';
+import 'package:weather_app/cubit/weather_cubit.dart';
 import 'package:weather_app/screens/widgets/custom_app_bar.dart';
-import '../../cubit/home_cubit.dart';
-import '../widgets/MyCard.dart';
-import '../widgets/Other_City_Section.dart';
-import '../widgets/my_chart.dart';
+import 'package:weather_app/screens/widgets/Other_City_Section.dart';
+import 'package:weather_app/screens/widgets/MyCard.dart';
+import 'package:weather_app/screens/widgets/my_chart.dart';
+import 'package:weather_app/screens/widgets/Global_Cities_Weather.dart';
+
+import '../../cubit/weather_State.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      context.read<WeatherCubit>().loadWeatherData('cairo');
+    });
+
     return Scaffold(
       backgroundColor: Color(0xFF191A48),
       body: Padding(
@@ -27,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          WeatherCard(),
+                          WeatherCard(data: state.currentWeatherData),
                           Text(
                             'Other Cities'.toUpperCase(),
                             style:
@@ -38,9 +44,7 @@ class HomeScreen extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                           ),
-                          OtherCitySection(
-                            dataList: [],
-                          ),
+                          OtherCitySection(dataList: state.localWeatherData),
                           Text(
                             'Forecast Next 5 Days'.toUpperCase(),
                             style:
@@ -51,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                           ),
-                          MyChart(),
+                          MyChart(data: state.fiveDaysData),
                           Text(
                             'Global Cities'.toUpperCase(),
                             style:
@@ -62,9 +66,7 @@ class HomeScreen extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                           ),
-                          GlobalCitySection(
-                            dataList: [],
-                          ),
+                          GlobalCitySection(dataList: state.globalWeatherData),
                         ],
                       );
                     } else if (state is WeatherError) {

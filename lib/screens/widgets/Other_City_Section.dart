@@ -10,6 +10,9 @@ class OtherCitySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (dataList.isEmpty) {
+      return Center(child: Text('No local cities data available'));
+    }
     return Container(
       height: 150,
       child: ListView.separated(

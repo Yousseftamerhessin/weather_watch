@@ -6,21 +6,15 @@ class ApiRepository {
 
   ApiRepository({this.url, this.payload});
 
-  Dio _dio = Dio();
+  final Dio _dio = Dio();
 
-  get({
-    Function()? beforeSend,
-    Function(dynamic data)? onSuccess,
-    Function(dynamic error)? onError,
-  }) {
-    _dio.get(url!, queryParameters: this.payload).then((response) {
-      if (onSuccess != null) {
-        onSuccess(response.data);
-      }
-    }).catchError((error) {
-      if (onError != null) {
-        onError(error);
-      }
-    });
+  Future<Map<String, dynamic>> get() async {
+    try {
+      final response = await _dio.get(url!, queryParameters: payload);
+      return response.data as Map<String, dynamic>;
+    } catch (error) {
+      print('API request error: $error');
+      throw Exception('Failed to fetch data from API');
+    }
   }
 }

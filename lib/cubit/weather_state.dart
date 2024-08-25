@@ -1,40 +1,40 @@
 import 'package:equatable/equatable.dart';
-import 'package:weather_app/model/current_weather_data.dart';
-import 'package:weather_app/model/five_days_data.dart';
+import '/model/current_weather_data.dart';
+import '/model/five_days_data.dart';
 
-abstract class HomeState extends Equatable {
+abstract class WeatherState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class HomeLoading extends HomeState {}
+class WeatherLoading extends WeatherState {}
 
-class HomeLoaded extends HomeState {
+class WeatherLoaded extends WeatherState {
   final CurrentWeatherData currentWeatherData;
-  final List<CurrentWeatherData> dataListLocal;
-  final List<CurrentWeatherData> dataListGlobal;
+  final List<CurrentWeatherData> localWeatherData;
+  final List<CurrentWeatherData> globalWeatherData;
   final List<FiveDayData> fiveDaysData;
 
-  HomeLoaded({
+  WeatherLoaded({
     required this.currentWeatherData,
-    required this.dataListLocal,
-    required this.dataListGlobal,
+    required this.localWeatherData,
+    required this.globalWeatherData,
     required this.fiveDaysData,
   });
 
   @override
   List<Object> get props => [
         currentWeatherData,
-        dataListLocal,
-        dataListGlobal,
+        localWeatherData,
+        globalWeatherData,
         fiveDaysData,
       ];
 }
 
-class HomeError extends HomeState {
+class WeatherError extends WeatherState {
   final String message;
 
-  HomeError(this.message);
+  WeatherError(this.message);
 
   @override
   List<Object> get props => [message];

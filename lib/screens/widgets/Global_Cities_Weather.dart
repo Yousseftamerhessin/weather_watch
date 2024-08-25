@@ -1,5 +1,3 @@
-// lib/screens/widgets/Global_Cities_Weather.dart
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../constants/images.dart';
@@ -12,6 +10,9 @@ class GlobalCitySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (dataList.isEmpty) {
+      return Center(child: Text('No global cities data available'));
+    }
     return Container(
       height: 150,
       child: ListView.separated(
