@@ -23,6 +23,9 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomAppBar(),
+            SizedBox(
+              height: 8,
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: BlocBuilder<WeatherCubit, WeatherState>(
@@ -31,40 +34,55 @@ class HomeScreen extends StatelessWidget {
                       return Center(child: CircularProgressIndicator());
                     } else if (state is WeatherLoaded) {
                       return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           WeatherCard(data: state.currentWeatherData),
-                          Text(
-                            'Other Cities'.toUpperCase(),
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      fontSize: 16,
-                                      fontFamily: 'flutterfonts',
-                                      color: Colors.white54,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Other Cities'.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    fontSize: 16,
+                                    fontFamily: 'flutterfonts',
+                                    color: Colors.white54,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ),
                           OtherCitySection(dataList: state.localWeatherData),
-                          Text(
-                            'Forecast Next 5 Days'.toUpperCase(),
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      fontSize: 16,
-                                      fontFamily: 'flutterfonts',
-                                      color: Colors.white54,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Forecast Next 5 Days'.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    fontSize: 16,
+                                    fontFamily: 'flutterfonts',
+                                    color: Colors.white54,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ),
                           MyChart(data: state.fiveDaysData),
-                          Text(
-                            'Global Cities'.toUpperCase(),
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      fontSize: 16,
-                                      fontFamily: 'flutterfonts',
-                                      color: Colors.white54,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Global Cities'.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    fontSize: 16,
+                                    fontFamily: 'flutterfonts',
+                                    color: Colors.white54,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ),
                           GlobalCitySection(dataList: state.globalWeatherData),
                         ],

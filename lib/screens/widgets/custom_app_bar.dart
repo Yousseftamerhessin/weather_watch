@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '/cubit/weather_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({Key? key}) : super(key: key);
@@ -31,13 +33,12 @@ class CustomAppBar extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 10, left: 20, right: 20),
             child: TextField(
-              onChanged: (value) {
-                print("City: $value");
-              },
+              onChanged: (value) {},
               style: TextStyle(color: Colors.white),
               textInputAction: TextInputAction.search,
               onSubmitted: (value) {
-                print("Submitted City: $value");
+                final weatherCubit = BlocProvider.of<WeatherCubit>(context);
+                weatherCubit.loadWeatherData(value);
               },
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white),
@@ -54,6 +55,7 @@ class CustomAppBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(color: Colors.white),
                 ),
+                suffixIcon: Icon(Icons.search, color: Colors.white),
               ),
             ),
           ),
