@@ -13,7 +13,6 @@ class WeatherCubit extends Cubit<WeatherState> {
     'ismailia',
     'fayoum'
   ];
-
   final List<String> globalCities = [
     'New York',
     'London',

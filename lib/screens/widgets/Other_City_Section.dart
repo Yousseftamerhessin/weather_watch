@@ -41,7 +41,6 @@ class OtherCitySection extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black45,
                           fontFamily: 'flutterfonts',
                         ),
                   ),
@@ -50,7 +49,6 @@ class OtherCitySection extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black45,
                           fontFamily: 'flutterfonts',
                         ),
                   ),
@@ -62,7 +60,6 @@ class OtherCitySection extends StatelessWidget {
                   Text(
                     '${data.weather![0].description}',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black45,
                           fontFamily: 'flutterfonts',
                           fontSize: 14,
                         ),

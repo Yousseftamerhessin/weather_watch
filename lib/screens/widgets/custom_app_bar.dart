@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '/cubit/weather_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+  CustomAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,9 @@ class CustomAppBar extends StatelessWidget {
             elevation: 0,
             leading: IconButton(
               icon: Icon(Icons.menu, color: Colors.white),
-              onPressed: () {},
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
             ),
           ),
           Padding(

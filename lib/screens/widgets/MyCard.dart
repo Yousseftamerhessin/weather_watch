@@ -12,7 +12,6 @@ class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color(0xFF86879E),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
@@ -21,13 +20,14 @@ class WeatherCard extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.location_on, color: Colors.white),
-                SizedBox(width: 10),
+                Icon(
+                  Icons.location_on,
+                ),
                 Text(
                   '${data.name?.toUpperCase() ?? 'No data'}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'flutterfonts',
@@ -36,9 +36,8 @@ class WeatherCard extends StatelessWidget {
               ],
             ),
             Text(
-              DateFormat('EEEE, MMMM d, yyyy').format(DateTime.now()),
+              DateFormat('EEEE, MMMM d').format(DateTime.now()),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white,
                     fontSize: 16,
                     fontFamily: 'flutterfonts',
                   ),
@@ -46,7 +45,7 @@ class WeatherCard extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Divider(color: Colors.white.withOpacity(0.5)),
+            Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -56,7 +55,6 @@ class WeatherCard extends StatelessWidget {
                     Text(
                       '${data.weather?.isNotEmpty == true ? data.weather![0].description : 'No description'}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
                             fontSize: 22,
                             fontFamily: 'flutterfonts',
                           ),
@@ -65,14 +63,12 @@ class WeatherCard extends StatelessWidget {
                       '${(data.main!.temp! - 273.15).round().toString()}\u2103',
                       style:
                           Theme.of(context).textTheme.displayMedium?.copyWith(
-                                color: Colors.white,
                                 fontFamily: 'flutterfonts',
                               ),
                     ),
                     Text(
                       'min: ${(data.main!.temp! - 273.15).round().toString()}°C / max: ${(data.main!.temp! - 273.15).round().toString()}°C',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'flutterfonts',
@@ -90,7 +86,6 @@ class WeatherCard extends StatelessWidget {
                     Text(
                       'wind ${data.wind?.speed ?? 0} m/s',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'flutterfonts',
