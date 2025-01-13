@@ -40,8 +40,9 @@ abstract class LocationHandler {
       List<Placemark> placeMarks =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placeMarks[0];
-      return "${place.street}, ${place.subLocality},${place.subAdministrativeArea}, ${place.postalCode}";
+      return "${place.street}, ${place.subLocality}, ${place.locality}, ${place.subAdministrativeArea}, ${place.country}, ${place.postalCode}";
     } catch (e) {
+      // تسجيل الخطأ
       return null;
     }
   }

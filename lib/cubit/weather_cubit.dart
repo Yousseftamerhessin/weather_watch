@@ -1,77 +1,83 @@
 import 'package:bloc/bloc.dart';
-import 'package:weather_app/cubit/weather_State.dart';
+import 'package:geolocator/geolocator.dart';
 import '/model/current_weather_data.dart';
 import '/service/weather_service.dart';
+import 'weather_state.dart';
+import '../utils/location_handler.dart';
+import 'dart:math';
 
 class WeatherCubit extends Cubit<WeatherState> {
   WeatherCubit() : super(WeatherLoading());
 
-  final List<String> localCities = [
-    'cairo',
-    'giza',
-    'alexandria',
-    'ismailia',
-    'fayoum'
-  ];
-  final List<String> globalCities = [
-    'New York',
-    'London',
-    'Tokyo',
-    'Paris',
-    'Sydney',
-    'Berlin',
-    'Moscow',
-    'Istanbul',
-    'Rome',
-    'Dubai'
+  final List<Map<String, dynamic>> localCities = [
+    {'name': 'Cairo', 'lat': 30.0444, 'lon': 31.2357},
+    {'name': 'Giza', 'lat': 29.9765, 'lon': 31.1313},
+    {'name': 'Alexandria', 'lat': 31.2156, 'lon': 29.9553},
+    {'name': 'Ismailia', 'lat': 30.5965, 'lon': 32.2715},
+    {'name': 'Fayoum', 'lat': 29.3084, 'lon': 30.8428},
   ];
 
-  Future<CurrentWeatherData> _fetchCurrentWeatherData(String city) async {
-    final weatherService = WeatherService(city: city);
-    final currentWeatherData = await weatherService.getCurrentWeatherData();
-    return currentWeatherData;
+  Future<List<Map<String, dynamic>>> _getNearestCities(Position position, int limit) async {
+    List<Map<String, dynamic>> sortedCities = List.from(localCities);
+
+    sortedCities.sort((a, b) {
+      double distanceA = _calculateDistance(position.latitude, position.longitude, a['lat'], a['lon']);
+      double distanceB = _calculateDistance(position.latitude, position.longitude, b['lat'], b['lon']);
+      return distanceA.compareTo(distanceB);
+    });
+
+    return sortedCities.take(limit).toList();
   }
 
-  Future<List<CurrentWeatherData>> _fetchWeatherDataForCities(
-      List<String> cities) async {
-    try {
-      final futures = cities.map((city) async {
-        try {
-          final service = WeatherService(city: city);
-          return await service.getCurrentWeatherData();
-        } catch (e) {
-          print('Error fetching data for city: $city, error: $e');
-          return null;
-        }
-      }).toList();
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double earthRadius = 6371; // بالكيلومترات
+    double dLat = _degreesToRadians(lat2 - lat1);
+    double dLon = _degreesToRadians(lon2 - lon1);
 
-      final results = await Future.wait(futures);
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_degreesToRadians(lat1)) *
+            cos(_degreesToRadians(lat2)) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
 
-      return results.whereType<CurrentWeatherData>().toList();
-    } catch (e) {
-      print('Error in _fetchWeatherDataForCities: $e');
-      throw Exception('Failed to load weather data for cities');
-    }
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return earthRadius * c;
   }
 
-  Future<void> loadWeatherData(String city) async {
+  double _degreesToRadians(double degrees) => degrees * (pi / 180);
+
+  Future<void> loadWeatherDataFromLocation() async {
     emit(WeatherLoading());
 
     try {
-      final currentWeatherData = await _fetchCurrentWeatherData(city);
-      final localWeatherData = await _fetchWeatherDataForCities(localCities);
-      final globalWeatherData = await _fetchWeatherDataForCities(globalCities);
-      final fiveDaysData =
-          await WeatherService(city: city).getFiveDaysThreeHoursForcastData();
+      // 1. الحصول على الموقع الحالي
+      final position = await LocationHandler.getCurrentPosition();
+      if (position == null) {
+        emit(WeatherError('Unable to retrieve location.'));
+        return;
+      }
+
+      // 2. أقرب مدينة
+      final nearestCities = await _getNearestCities(position, 3);
+      final currentCity = nearestCities.first['name'];
+
+      // 3. جلب بيانات الطقس
+      final currentWeatherData = await WeatherService(city: currentCity).getCurrentWeatherData();
+      final localWeatherData = await Future.wait(
+        nearestCities.map(
+          (city) => WeatherService(city: city['name']).getCurrentWeatherData(),
+        ),
+      );
 
       emit(WeatherLoaded(
         currentWeatherData: currentWeatherData,
         localWeatherData: localWeatherData,
-        globalWeatherData: globalWeatherData,
-        fiveDaysData: fiveDaysData,
+        globalWeatherData: [], // يمكن إضافتها حسب الحاجة
+        fiveDaysData: [], // يمكن إضافتها حسب الحاجة
       ));
     } catch (e) {
-      emit(WeatherError(e.toString()));
+      emit(WeatherError('Error loading weather data: $e'));
     }
   }
+
 }

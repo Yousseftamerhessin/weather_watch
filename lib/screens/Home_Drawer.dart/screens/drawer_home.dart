@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/screens/Home_Drawer.dart/widget/Help_Tile.dart';
-import 'package:weather_app/screens/Home_Drawer.dart/widget/Rate_app.dart';
 import '../widget/Dark_mode.dart';
+import '../widget/Help_Tile.dart';
+import '../widget/Rate_app.dart';
 
 class HomeDrawer extends StatelessWidget {
   @override
@@ -18,11 +18,11 @@ class HomeDrawer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              DarkMode(),
-              HelpTile(),
-              RateApp(),
-              Spacer(),
+              const SizedBox(height: 20),
+               DarkMode(),
+               HelpTile(),
+               RateApp(),
+              const Spacer(),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

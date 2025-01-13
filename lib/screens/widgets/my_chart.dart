@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../model/five_days_data.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MyChart extends StatelessWidget {
   final List<FiveDayData> data;
